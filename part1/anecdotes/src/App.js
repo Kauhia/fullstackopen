@@ -13,6 +13,10 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(anecdotes.map(() => 0))
+  const mostVotedIndex = votes.reduce((acc, next, index) =>
+    next > acc.value ? { value: next, index } : acc,
+    {value: 0, index: 0}
+  ).index // by default show index 0 anecdote
 
   // Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
   function getRandomInt(min, max) {
@@ -35,6 +39,7 @@ const App = () => {
   return (
     <div>
       <div>
+        <h1>Anecdote of the day</h1>
         <p>
           {anecdotes[selected]}
         </p>
@@ -46,6 +51,9 @@ const App = () => {
         <button onClick={vote}>vote</button>
         <button onClick={randomize}>next anecdote</button>
       </div>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[mostVotedIndex]}</p>
+      
     </div>
   )
 }
