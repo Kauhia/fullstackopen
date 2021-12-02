@@ -6,7 +6,7 @@ const Part = ({name, exercises}) => <p key={name}>{name} {exercises}</p>
 const Content = ({parts}) => parts.map(Part)
 
 const Total = ({parts}) =>
-  <p>Number of exercises {parts.reduce((a, b) => a + b.exercises, 0)}</p>
+  <p>total of {parts.reduce((a, b) => a + b.exercises, 0)} exercises</p>
 
 const Course = ({course}) => 
     <div>
