@@ -9,7 +9,11 @@ const App = () => {
     const phoneNumberOnChange = (event) => setNewName(event.target.value)
     const onFormSubmitClick = (e) => {
         e.preventDefault()
-        setPersons([...persons, { name: newName }])
+        if (persons.some(person => person.name === newName)) {
+            alert(`${newName} is already added to phonebook`);
+        } else {
+            setPersons([...persons, { name: newName }])
+        }
     }
 
     const PhoneNumber = ({name}) => <p key={name}>{name}</p>
