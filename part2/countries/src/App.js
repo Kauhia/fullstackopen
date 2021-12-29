@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 
-const CountryItem = (country) => <p key={country.name.common}>{country.name.common}</p>
-const CountryDescription = (country) =>
-    <div>
+const CountryDescription = ({country}) =>
+    <div key={country.name.common}>
         <h2>{country.name.common}</h2>
         <p>Capital: {country.capital[0]}</p>
         <p>Population: {country.population}</p>
@@ -11,6 +10,20 @@ const CountryDescription = (country) =>
         {Object.values(country.languages).map(lang => <p>{lang}</p>)}
         <img src={country.flags.png} alt="" />
     </div>
+
+const CountryRow = ({country}) => {
+    const [open, setOpen] = useState(false)
+    const name = country.name.common
+    return (
+        <div key={name}>
+            {!open &&
+            <p>{name}
+                <button onClick={() => setOpen(true)}>Open</button>
+            </p>}
+            {open && <CountryDescription country={country}/>}
+        </div>
+    )
+}        
 
 const App = () => {
     const [results, setResults] = useState([])
@@ -36,9 +49,9 @@ const App = () => {
         switch (true) {
             case searchValue.length === 0: return <p>Type something in the field</p>
             case countries.length > 10: return <p>Too many matches, specify another filter</p>;
-            case countries.length === 1: return CountryDescription(countries[0]);
+            case countries.length === 1: return <CountryDescription country={countries[0]}/>;
             case countries.length === 0: return <p>No results</p>;
-            default: return countries.map(CountryItem);
+            default: return countries.map(country => <CountryRow key={country.name.common} country={country}/>);
         }
     }
 
