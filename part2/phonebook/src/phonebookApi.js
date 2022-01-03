@@ -8,7 +8,6 @@ const addPersonRecord = async (record) => {
 }
 
 const updatePersonRecord = async (record) => {
-    console.log("rec", record)
     const res = await axios.put(`${PERSON_ENDPOINT_URL}/${record.id}`, record)
     return res.data
 }

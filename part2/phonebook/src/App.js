@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import Phonebook from "./phonebookApi";
+import "./index.css"
+
+const Notification = ({notification, onChange}) => {
+    useEffect(() => {
+        setTimeout(() => onChange(null), 5 * 1000)
+    }, [notification?.message])
+
+    if (notification === null) return null
+    return (
+        <div className={notification.kind}>
+            {notification.message}
+        </div>
+    )
+}
 
 const PhonebookForm = ({submit}) => {
     // Add phone number
@@ -31,9 +45,9 @@ const PhonebookForm = ({submit}) => {
 }
 
 
-const PhonobookItem = ({name, number, remove}) => (
+const PhonobookItem = ({record, remove}) => (
     <p>
-        {name}: {number}
+        {record.name}: {record.number}
         <button onClick={remove}>Delete</button>
     </p>
 )
@@ -45,7 +59,7 @@ const PhonebookList = ({persons, remove}) => {
         .filter(({name}) => 
             !filter ||
             name.toLowerCase().includes(filter.toLowerCase()) 
-        ).map(p => <PhonobookItem key={p.name} name={p.name} number={p.number} remove={remove(p)}/>)
+        ).map(p => <PhonobookItem key={p.name} record={p} remove={remove(p)}/>)
 
     const filterOnChange = (event) => setFilter(event.target.value)
     return (
@@ -63,6 +77,8 @@ const PhonebookList = ({persons, remove}) => {
 
 const App = () => {
     const [persons, setPersons] = useState([])
+    const [notification, setNotification] = useState(null) // { message, kind: error || info || success}
+
     useEffect(() => {
         (async () => { // Make some magic to avoid react warning about async
             const response = await Phonebook.getPersonRecords()
@@ -89,19 +105,24 @@ const App = () => {
         const shouldUpdate = isDuplicate && window.confirm(duplicateMessage)
         
         if (shouldAdd) {
-            await Phonebook.addPersonRecord(record)
-            setPersons([...persons, record])
+            const res = await Phonebook.addPersonRecord(record)
+            setPersons([...persons, res])
+            setNotification({ message:`Added ${record.name}`, kind: "success"})
         }
 
         if (shouldUpdate) {
-            await Phonebook.updatePersonRecord({...record, id: personWithSameName.id})
+            const res = await Phonebook.updatePersonRecord({...record, id: personWithSameName.id})
             const personsWithoutUpdatedRecord = persons.filter(p => p.id !== personWithSameName.id)
-            setPersons([...personsWithoutUpdatedRecord, record])
-        }        
+            setPersons([...personsWithoutUpdatedRecord, res])
+            setNotification({ message:`Updated ${record.name}`, kind: "success"})
+        }
     }
 
     return (
         <div>
+            <Notification
+                notification={notification}
+                onChange={setNotification}/>
             <PhonebookForm submit={addPerson}/>
             <PhonebookList persons={persons} remove={deletePerson}/>
         </div>
