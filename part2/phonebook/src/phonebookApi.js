@@ -7,6 +7,12 @@ const addPersonRecord = async (record) => {
     return res.data
 }
 
+const updatePersonRecord = async (record) => {
+    console.log("rec", record)
+    const res = await axios.put(`${PERSON_ENDPOINT_URL}/${record.id}`, record)
+    return res.data
+}
+
 const getPersonRecords = async () => {
     const res = await axios.get(PERSON_ENDPOINT_URL)
     return res.data
@@ -20,7 +26,8 @@ const deletePersonRecord = async (id) => {
 const Phonebook = {
     addPersonRecord,
     getPersonRecords,
-    deletePersonRecord
+    deletePersonRecord,
+    updatePersonRecord
 }
 
 export default Phonebook

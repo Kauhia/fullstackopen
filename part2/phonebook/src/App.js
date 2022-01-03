@@ -73,7 +73,7 @@ const App = () => {
     const deletePerson = (personToDelete) => async () => {
         const confirmed = window.confirm(`Delete user ${personToDelete.name}?`);
         if (confirmed) {
-            const res = await Phonebook.deletePersonRecord(personToDelete.id)
+            await Phonebook.deletePersonRecord(personToDelete.id)
             const updatedPersons = persons.filter(person => person.id !== personToDelete.id)
             setPersons(updatedPersons)
         }
@@ -81,12 +81,23 @@ const App = () => {
 
     const addPerson = (record) => async (e) => {
         e.preventDefault()
-        if (persons.some(person => person.name === record.newName)) {
-            alert(`${record.newName} is already added to phonebook`);
-        } else {
+        const personWithSameName = persons.find(person => person.name === record.name)
+        const isDuplicate = !!personWithSameName
+        const shouldAdd = !isDuplicate
+
+        const duplicateMessage = `${record.name} is already added to phonebook, replace the old number with a new one?`
+        const shouldUpdate = isDuplicate && window.confirm(duplicateMessage)
+        
+        if (shouldAdd) {
             await Phonebook.addPersonRecord(record)
             setPersons([...persons, record])
         }
+
+        if (shouldUpdate) {
+            await Phonebook.updatePersonRecord({...record, id: personWithSameName.id})
+            const personsWithoutUpdatedRecord = persons.filter(p => p.id !== personWithSameName.id)
+            setPersons([...personsWithoutUpdatedRecord, record])
+        }        
     }
 
     return (
