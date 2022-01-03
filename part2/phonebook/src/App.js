@@ -77,14 +77,12 @@ const PhonebookList = ({persons, remove}) => {
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [notification, setNotification] = useState(null) // { message, kind: error || info || success}
+    const [notification, setNotification] = useState(null) // { message, kind: error || success}
 
-    useEffect(() => {
-        (async () => { // Make some magic to avoid react warning about async
-            const response = await Phonebook.getPersonRecords()
-            setPersons(response)
-        })()
-    }, [])
+    const fetchPhonebook = async () => {
+        const response = await Phonebook.getPersonRecords()
+        setPersons(response)
+    }
 
     const deletePerson = (personToDelete) => async () => {
         const confirmed = window.confirm(`Delete user ${personToDelete.name}?`);
@@ -105,18 +103,32 @@ const App = () => {
         const shouldUpdate = isDuplicate && window.confirm(duplicateMessage)
         
         if (shouldAdd) {
-            const res = await Phonebook.addPersonRecord(record)
-            setPersons([...persons, res])
-            setNotification({ message:`Added ${record.name}`, kind: "success"})
+            try {
+                const res = await Phonebook.addPersonRecord(record)
+                setPersons([...persons, res])
+                setNotification({ message:`Added ${record.name}`, kind: "success"})
+            } catch (error) {
+                await fetchPhonebook()
+                setNotification({ message:`Failed to added ${record.name}`, kind: "error"})
+            }
         }
 
         if (shouldUpdate) {
-            const res = await Phonebook.updatePersonRecord({...record, id: personWithSameName.id})
-            const personsWithoutUpdatedRecord = persons.filter(p => p.id !== personWithSameName.id)
-            setPersons([...personsWithoutUpdatedRecord, res])
-            setNotification({ message:`Updated ${record.name}`, kind: "success"})
+            try {
+                const res = await Phonebook.updatePersonRecord({...record, id: personWithSameName.id})
+                const personsWithoutUpdatedRecord = persons.filter(p => p.id !== personWithSameName.id)
+                setPersons([...personsWithoutUpdatedRecord, res])
+                setNotification({ message:`Updated ${record.name}`, kind: "success"})    
+            } catch (error) {
+                await fetchPhonebook()
+                setNotification({ message:`Failed to update ${record.name}`, kind: "error"})
+            }
         }
     }
+
+    useEffect(() => { 
+        fetchPhonebook()
+    }, [])
 
     return (
         <div>

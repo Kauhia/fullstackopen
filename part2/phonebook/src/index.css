@@ -2,5 +2,10 @@
   border: 1px solid #35d60d;
   background: rgb(159, 255, 159);
   padding: 10px;
-  /*background-color: greenyellow;*/
+}
+
+.error {
+  border: 1px solid #d60d0d;
+  background: rgb(255, 170, 170);
+  padding: 10px;
 }
