@@ -12,7 +12,15 @@ const getPersonRecords = async () => {
     return res.data
 }
 
-export default {
-    addPersonRecord,
-    getPersonRecords
+const deletePersonRecord = async (id) => {
+    const res = await axios.delete(`${PERSON_ENDPOINT_URL}/${id}`)
+    return res.data
 }
+
+const Phonebook = {
+    addPersonRecord,
+    getPersonRecords,
+    deletePersonRecord
+}
+
+export default Phonebook
