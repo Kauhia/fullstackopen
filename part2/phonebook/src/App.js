@@ -39,6 +39,11 @@ const App = () => {
             name.toLowerCase().includes(filter.toLowerCase()) 
         )
 
+    const postNewPhoneNumber = async (phoneNumberData) => {
+        const res = await axios.post("http://localhost:3001/persons", phoneNumberData)
+        return res.data
+    }
+
     useEffect(() => {
         (async () => { // Make some magic to avoid react warning about async
             const response = await axios.get("http://localhost:3001/persons")
@@ -51,12 +56,14 @@ const App = () => {
     const phoneNumberOnChange = (event) => setNewNumber(event.target.value)
     const filterOnChange = (event) => setFilter(event.target.value)
 
-    const onFormSubmitClick = (e) => {
+    const onFormSubmitClick = async (e) => {
         e.preventDefault()
         if (persons.some(person => person.name === newName)) {
             alert(`${newName} is already added to phonebook`);
         } else {
-            setPersons([...persons, { name: newName, number: newNumber }])
+            const newPersonRecord = { name: newName, number: newNumber }
+            const res = await postNewPhoneNumber(newPersonRecord)
+            setPersons([...persons, newPersonRecord])
         }
     }
 
