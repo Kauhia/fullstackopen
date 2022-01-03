@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from "axios"
+import Phonebook from "./phonebookApi";
 
 const PersonFilter = ({value, onChange}) => (
     <div>
@@ -39,15 +39,10 @@ const App = () => {
             name.toLowerCase().includes(filter.toLowerCase()) 
         )
 
-    const postNewPhoneNumber = async (phoneNumberData) => {
-        const res = await axios.post("http://localhost:3001/persons", phoneNumberData)
-        return res.data
-    }
-
     useEffect(() => {
         (async () => { // Make some magic to avoid react warning about async
-            const response = await axios.get("http://localhost:3001/persons")
-            setPersons(response.data)
+            const response = await Phonebook.getPersonRecords()
+            setPersons(response)
         })()
     }, [])
 
@@ -62,7 +57,7 @@ const App = () => {
             alert(`${newName} is already added to phonebook`);
         } else {
             const newPersonRecord = { name: newName, number: newNumber }
-            const res = await postNewPhoneNumber(newPersonRecord)
+            await Phonebook.addPersonRecord(newPersonRecord)
             setPersons([...persons, newPersonRecord])
         }
     }
