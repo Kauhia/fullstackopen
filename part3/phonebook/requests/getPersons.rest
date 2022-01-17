@@ -1,1 +1,8 @@
+### resp 200 + json
 GET http://localhost:3001/api/persons
+
+### Test without id found - resp 404
+GET http://localhost:3001/api/persons/50
+
+### Test with id found - resp 200 + json
+GET http://localhost:3001/api/persons/3
