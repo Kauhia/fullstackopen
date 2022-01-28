@@ -44,6 +44,15 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.post('/api/persons', (request, response) => {
+    const newPerson = { 
+        ...request.body,
+        id: Math.random() * 1000 * 1000 * 1000
+    }
+    persons.push(newPerson)
+    response.json(persons)
+})
+
 app.get('/info', (request, response) => {
     const peopleCount = persons.length;
     const time = (new Date()).toString();

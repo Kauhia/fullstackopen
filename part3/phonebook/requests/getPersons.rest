@@ -8,7 +8,16 @@ GET http://localhost:3001/api/persons/50
 GET http://localhost:3001/api/persons/3
 
 ### Test delete on existing person - resp json
-delete http://localhost:3001/api/persons/3
+DELETE http://localhost:3001/api/persons/3
 
 ### Test delete on non-existent person - resp 404
-delete http://localhost:3001/api/persons/30
+DELETE http://localhost:3001/api/persons/30
+
+### Test add new person - resp 200
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Test Personel",
+    "number": "020202"
+}
