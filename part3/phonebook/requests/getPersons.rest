@@ -6,3 +6,9 @@ GET http://localhost:3001/api/persons/50
 
 ### Test with id found - resp 200 + json
 GET http://localhost:3001/api/persons/3
+
+### Test delete on existing person - resp json
+delete http://localhost:3001/api/persons/3
+
+### Test delete on non-existent person - resp 404
+delete http://localhost:3001/api/persons/30
