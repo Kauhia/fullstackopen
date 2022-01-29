@@ -13,11 +13,36 @@ DELETE http://localhost:3001/api/persons/3
 ### Test delete on non-existent person - resp 404
 DELETE http://localhost:3001/api/persons/30
 
-### Test add new person - resp 200
+### Test add new person - resp 201
 POST http://localhost:3001/api/persons
 content-type: application/json
 
 {
     "name": "Test Personel",
+    "number": "020202"
+}
+
+### Add new person without name - resp 400 + error
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "number": "020202"
+}
+
+### Add new person without number - resp 400 + error
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Test Personel"
+}
+
+### Add new person with duplicate name - resp 400 + error
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Arto Hellas",
     "number": "020202"
 }

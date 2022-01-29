@@ -45,12 +45,27 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
+    // make very naive checks and exit request using returns
+    if (!request.body.name) {
+        return response.status(400).json({ error: 'name must exist' })
+    }
+
+    const nameInBook = persons.find(p => p.name === request.body.name)
+    if (nameInBook) {
+        return response.status(400).json({ error: 'name must be unique' })
+    }
+
+    if (request.body.number === undefined) {
+        return response.status(400).json({ error: 'number must exist' })
+    }
+    
     const newPerson = { 
-        ...request.body,
-        id: Math.random() * 1000 * 1000 * 1000
+        id: Math.random() * 1000 * 1000 * 1000,
+        name: request.body.name,
+        number: request.body.number
     }
     persons.push(newPerson)
-    response.json(persons)
+    return response.status(201).json(persons)
 })
 
 app.get('/info', (request, response) => {
