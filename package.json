@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd part3/phonebook/server && npm start"
+    "start": "cd part3/phonebook/server && npm install && npm start"
   },
   "repository": {
     "type": "git",
