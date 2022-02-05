@@ -18,6 +18,7 @@ const extendedMorganTinyConfig = function (tokens, req, res) {
 
 app.use(express.json())
 app.use(morgan(extendedMorganTinyConfig))
+app.use(express.static('../front/build'))
 
 let persons = [
     { 
