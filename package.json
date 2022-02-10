@@ -4,10 +4,10 @@
   "description": "Package json for heroku deployment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:server": "cd part3/phonebook/server && npm install && npm start",
-    "build:front": "cd part3/phonebook/front && npm install && npm run build",
-    "start": "npm run start:server && npm run build:front"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix front && npm run build --prefix front",
+    "server": "npm install --prefix server && npm start --prefix server",
+    "front": "npm install --prefix front && npm run build --prefix front ",
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
