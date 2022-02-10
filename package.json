@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:server": "cd part3/phonebook/server && npm install && npm start",
     "build:front": "cd part3/phonebook/front && npm install && npm run build",
-    "start": "npm run build:front && npm run start:server"
+    "start": "npm run start:server && npm run build:front"
   },
   "repository": {
     "type": "git",
