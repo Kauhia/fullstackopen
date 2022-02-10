@@ -4,7 +4,7 @@
   "description": "Package json for heroku deployment",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix front && npm run build --prefix front",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix part3/phonebook/front && npm run build --prefix part3/phonebook/front",
     "server": "npm install --prefix part3/phonebook/server && npm start --prefix part3/phonebook/server",
     "front": "npm install --prefix part3/phonebook/front && npm run build --prefix part3/phonebook/front ",
     "start": "npm run server"
